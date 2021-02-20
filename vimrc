@@ -1,9 +1,23 @@
 filetype plugin indent on
 set nocompatible
 
+call plug#begin('~/.vim/plugged')
+
+Plug 'morhetz/gruvbox'
+
+Plug 'itchyny/lightline.vim'
+
+Plug '~/.fzf'
+Plug 'junegunn/fzf.vim'
+
+Plug 'tpope/vim-unimpaired'
+
+call plug#end()
+
 syntax on
 
-colorscheme desert
+colorscheme gruvbox
+set background=dark
 
 let @/='' " Clear register to avoid hlsearch after sourcing vimrc
 
