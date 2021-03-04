@@ -42,7 +42,6 @@ set shortmess+=I  " Disable startup message
 set hidden
 set confirm
 
-
 set tagbsearch
 set tags=tags,./tags " Search from the current file folder up to working dir
 
@@ -133,3 +132,36 @@ inoremap <C-a> <C-o>I
 inoremap <C-f> <C-o>l
 inoremap <C-b> <C-o>b
 inoremap <C-k> <C-o>d$
+
+" { FZF
+let g:fzf_command_prefix = 'Fzf'
+let g:fzf_buffers_jump = 1
+
+let g:fzf_layout = { 'down': '50%' }
+
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+  \ { 'fg':      ['fg', 'Normal'],
+  \   'bg':      ['bg', 'Normal'],
+  \   'hl':      ['fg', 'Comment'],
+  \   'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \   'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \   'hl+':     ['fg', 'Statement'],
+  \   'info':    ['fg', 'PreProc'],
+  \   'border':  ['fg', 'Ignore'],
+  \   'prompt':  ['fg', 'Conditional'],
+  \   'pointer': ['fg', 'Exception'],
+  \   'marker':  ['fg', 'Keyword'],
+  \   'spinner': ['fg', 'Label'],
+  \   'header':  ['fg', 'Comment'] }
+
+nnoremap <silent> <Leader>o :FzfFiles<CR>
+nnoremap <silent> <Leader>p :FzfHistory<CR>
+nnoremap <silent> <Leader>r :FzfHistory:<CR>
+nnoremap <silent> <Leader>a :FzfBuffers<CR>
+nnoremap <silent> <Leader>t :FzfBTags<CR>
+
+imap  <C-x><C-k> <Plug>(fzf-complete-word)
+imap  <C-x><C-f> <Plug>(fzf-complete-path)
+imap  <C-x><C-l> <Plug>(fzf-complete-buffer-line)
+" }
