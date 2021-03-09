@@ -10,6 +10,8 @@ Plug 'itchyny/lightline.vim'
 Plug '~/.fzf'
 Plug 'junegunn/fzf.vim'
 
+Plug 'dense-analysis/ale'
+
 Plug 'tpope/vim-unimpaired'
 
 call plug#end()
@@ -42,6 +44,8 @@ set shortmess+=I  " Disable startup message
 set hidden
 set confirm
 
+set completeopt-=preview
+
 set tagbsearch
 set tags=tags,./tags " Search from the current file folder up to working dir
 
@@ -58,6 +62,13 @@ set laststatus=2
 set splitbelow splitright
 
 set ttimeoutlen=5 " Reduce keycode timeout to avoid delay with <Esc>
+
+set backupdir=~/.vim/tmp//,.
+set directory=~/.vim/tmp//,.
+if has('persistent_undo')
+  set undodir=~/.vim/tmp,.
+  set undofile
+endif
 
 set tabstop=2
 set softtabstop=2
@@ -101,6 +112,9 @@ nnoremap <silent> <Leader>Q :confirm qall<CR>
 
 nnoremap <silent> <CR> :noh<CR><CR>
 
+nnoremap <silent> <Leader>ll :lopen<CR>
+nnoremap <silent> <Leader>lq :copen<CR>
+
 nnoremap j gj
 nnoremap k gk
 
@@ -127,17 +141,25 @@ nnoremap <Leader>< <C-w>5<
 nnoremap <Leader>- <C-w>5-
 nnoremap <Leader>+ <C-w>5+
 
+nnoremap <silent><Leader>c :lclose<bar>cclose<bar>pclose<CR>
+
 inoremap <C-e> <C-o>A
 inoremap <C-a> <C-o>I
 inoremap <C-f> <C-o>l
 inoremap <C-b> <C-o>b
 inoremap <C-k> <C-o>d$
 
+inoremap <silent><expr> <Tab> 
+  \ pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <silent><expr> <S-Tab> 
+  \ pumvisible() ? "\<C-p>" : "\<C-h>"
+
+
 " { FZF
 let g:fzf_command_prefix = 'Fzf'
 let g:fzf_buffers_jump = 1
 
-let g:fzf_layout = { 'down': '50%' }
+let g:fzf_layout = { 'down': '40%' }
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
@@ -164,4 +186,28 @@ nnoremap <silent> <Leader>t :FzfBTags<CR>
 imap  <C-x><C-k> <Plug>(fzf-complete-word)
 imap  <C-x><C-f> <Plug>(fzf-complete-path)
 imap  <C-x><C-l> <Plug>(fzf-complete-buffer-line)
+" }
+
+" { ALE
+let g:ale_linters = {'rust': ['analyzer']}
+let g:ale_fixers = {'rust': ['rustfmt']}
+let g:ale_completion_enabled = 1
+let g:ale_sign_column_always = 1
+
+function! s:show_documentation()
+  if (index(['vim', 'help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    ALEHover
+  endif
+endfunction
+
+nnoremap <silent><buffer> K :call <SID>show_documentation()<CR>
+nnoremap <buffer> gd :ALEGoToDefinition<CR>
+nnoremap <buffer> gr :ALEFindReferences<CR>
+nmap <buffer> ]G <Plug>(ale_last)
+nmap <buffer> [G <Plug>(ale_first)
+nmap <buffer> ]g <Plug>(ale_next_wrap)
+nmap <buffer> [g <Plug>(ale_previous_wrap)
+
 " }
