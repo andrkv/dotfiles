@@ -13,6 +13,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'dense-analysis/ale'
 
 Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-commentary'
 
 call plug#end()
 
