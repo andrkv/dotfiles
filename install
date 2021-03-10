@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
 ln -sf $(pwd)/vimrc ~/.vimrc
-ln -sf $(pwd)/tmix/conf ~/.tmux.conf
+ln -sf $(pwd)/tmux.conf ~/.tmux.conf
 ln -sf $(pwd)/fzf.bash ~/.fzf.bash
