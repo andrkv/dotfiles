@@ -16,7 +16,7 @@ export FZF_DEFAULT_OPTS="--no-mouse --height=40% --reverse --multi --inline-info
   --preview='[[ \$(file --mime {}) =~ binary ]] && echo ''No preview'' ||
     (bat {} --color=always || cat {}) 2>/dev/null | head -100'
   --preview-window='hidden:right:70%'
-  --bind=ctrl-s:toggle-preview
+  --bind=ctrl-l:toggle-preview
   --bind=ctrl-d:half-page-down,ctrl-u:half-page-up
   --bind=ctrl-e:preview-down,ctrl-y:preview-up"
 
