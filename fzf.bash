@@ -21,8 +21,8 @@ export FZF_DEFAULT_OPTS="--no-mouse --height=40% --reverse --multi --inline-info
   --bind=ctrl-e:preview-down,ctrl-y:preview-up"
 
 FD_DEFAULT_OPTIONS="--type f --hidden --exclude .git"
-export FZF_DEFAULT_COMMAND="(fd $FD_DEFAULT_OPTIONS ||
-                             fdfind $FD_DEFAULT_OPTIONS ||
+export FZF_DEFAULT_COMMAND="(fdfind $FD_DEFAULT_OPTIONS ||
+                             fd $FD_DEFAULT_OPTIONS ||
                              find) 2> /dev/null"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND="fd --type d || find -type d"
+export FZF_ALT_C_COMMAND="fdfind --type d || fd --type d || find -type d"
