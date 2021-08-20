@@ -13,15 +13,17 @@ fi
 source "$HOME/.fzf/shell/key-bindings.bash"
 
 export FZF_DEFAULT_OPTS="--no-mouse --height=40% --reverse --multi --inline-info
+  --history=$HOME/.fzf_history
   --preview='[[ \$(file --mime {}) =~ binary ]] && echo ''No preview'' ||
     (bat {} --color=always || cat {}) 2>/dev/null | head -100'
-  --preview-window='hidden:right:70%'
-  --bind=ctrl-l:toggle-preview
-  --bind=ctrl-d:half-page-down,ctrl-u:half-page-up
-  --bind=ctrl-e:preview-down,ctrl-y:preview-up"
+  --preview-window='hidden:right:80%'
+  --bind=ctrl-o:select-all
+  --bind=ctrl-s:toggle-preview
+  --bind=ctrl-d:half-page-down,ctrl-u:half-page-up"
 
 FD_DEFAULT_OPTIONS="--type f --hidden --exclude .git"
-export FZF_DEFAULT_COMMAND="(fdfind $FD_DEFAULT_OPTIONS ||
+export FZF_DEFAULT_COMMAND="(git ls-files ||
+                             fdfind $FD_DEFAULT_OPTIONS ||
                              fd $FD_DEFAULT_OPTIONS ||
                              find) 2> /dev/null"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
