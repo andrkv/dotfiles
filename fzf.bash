@@ -1,30 +1,41 @@
 # Setup fzf
 # ---------
-if [[ ! "$PATH" == *$HOME/.fzf/bin* ]]; then
-  export PATH="${PATH:+${PATH}:}$HOME/.fzf/bin"
+if [[ ! "$PATH" == *${HOME}/.fzf/bin* ]]; then
+  PATH="${PATH:+${PATH}:}${HOME}/.fzf/bin"
 fi
 
-# Auto-completion
-# ---------------
-[[ $- == *i* ]] && source "$HOME/.fzf/shell/completion.bash" 2> /dev/null
+HISTORY_SIZE=50000
 
-# Key bindings
-# ------------
-source "$HOME/.fzf/shell/key-bindings.bash"
+export FZF_DEFAULT_OPTS="
+    --no-mouse --height=40% --reverse --multi --inline-info
+    --history=${HOME}/.fzf_history --history-size=${HISTORY_SIZE}
+    --preview-window=right,80%,hidden
+    --bind=ctrl-/:toggle-preview
+    --bind=ctrl-d:half-page-down
+    --bind=ctrl-u:half-page-up
+    --bind=ctrl-f:preview-half-page-down
+    --bind=ctrl-b:preview-half-page-up
+"
 
-export FZF_DEFAULT_OPTS="--no-mouse --height=40% --reverse --multi --inline-info
-  --history=$HOME/.fzf_history
-  --preview='[[ \$(file --mime {}) =~ binary ]] && echo ''No preview'' ||
-    (bat {} --color=always || cat {}) 2>/dev/null | head -100'
-  --preview-window='hidden:right:80%'
-  --bind=ctrl-o:select-all
-  --bind=ctrl-s:toggle-preview
-  --bind=ctrl-d:half-page-down,ctrl-u:half-page-up"
+FD_OPTS="--follow --hidden --exclude .git"
 
-FD_DEFAULT_OPTIONS="--type f --hidden --exclude .git"
-export FZF_DEFAULT_COMMAND="(git ls-files ||
-                             fdfind $FD_DEFAULT_OPTIONS ||
-                             fd $FD_DEFAULT_OPTIONS ||
-                             find) 2> /dev/null"
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND="fdfind --type d || fd --type d || find -type d"
+export FZF_DEFAULT_COMMAND="fdfind --type=f ${FD_OPTS}"
+
+export FZF_ALT_C_COMMAND="fdfind --type=d ${FD_OPTS}"
+
+export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
+
+export FZF_CTRL_T_OPTS="
+    --prompt='fd> ' \
+    --bind='ctrl-t:transform:[[ ! $FZF_PROMPT =~ git ]] && echo \"change-prompt(git> )+reload(git ls-files)\" || echo \"change-prompt(fd> )+reload($FZF_DEFAULT_COMMAND)\"' \
+    --preview='bat -n --color=always {}' \
+"
+
+export FZF_ALT_C_OPTS="--preview='tree -C {}'"
+
+export FZF_CTRL_R_OPTS="
+  --preview='echo {}' --preview-window=down:3:hidden:wrap
+  --bind='ctrl-y:execute-silent(echo -n {2..} | xclip -sel clip)+abort'
+"
+
+eval "$(fzf --bash)"
